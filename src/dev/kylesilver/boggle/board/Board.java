@@ -83,7 +83,6 @@ public class Board {
             for (int row = 0; row < tileGrid.length; row++) {
                 for (int col = 0; col < tileGrid[row].length; col++) {
                     tileSet.add(tileGrid[row][col]);
-                    System.out.println(tileGrid[row][col]);
                 }
             }
             return tileSet;

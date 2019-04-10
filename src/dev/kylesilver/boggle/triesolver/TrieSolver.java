@@ -7,6 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Constructs a Trie from the provided dictionary, then performs a Depth-First
+ * Search on the board to find all words.
+ * 
+ * @author Kyle Silver
+ */
 public class TrieSolver {
 
     private TrieNode root;
