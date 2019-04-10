@@ -1,39 +1,43 @@
 package dev.kylesilver.boggle.board;
 
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Tile {
-    private int row, col;
-
-    public Tile(int row, int col) {
-        this.row = row;
-        this.col = col;
-    }
-
-    @Override public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Tile)) {
-            return false;
-        }
-        Tile tile = (Tile) o;
-        return row == tile.row && col == tile.col;
-    }
-
-    @Override public int hashCode() {
-        return Objects.hash(row, col);
-    }
-
-    @Override public String toString() {
-        return "(" + row + ", " + col + ")";
-    }
-
-    public int row() {
-        return row;
-    }
-
-    public int col() {
-        return col;
-    }
+	private int row;
+	private int col;
+	private char value;
+	private Set<Tile> neighbors;
+	
+	public Tile(char value, int row, int col) {
+		this.row = row;
+		this.col = col;
+		this.value = value;
+		this.neighbors = new HashSet<>();
+	}
+	
+	public char value() {
+		return value;
+	}
+	
+	public int row() {
+		return row;
+	}
+	
+	public int col() {
+		return col;
+	}
+	
+	public void addNeighbor(Tile tile) {
+		neighbors.add(tile);
+	}
+	
+	public Set<Tile> neighbors() {
+		return neighbors;
+	}
+	
+	@Override public String toString() {
+		return String.format("(%d,%d)", row(), col());
+	}
+    
 }
