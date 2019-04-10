@@ -1,4 +1,4 @@
-package dev.kylesilver.boggle.dictsolver;
+package dev.kylesilver.boggle.solvers;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,9 +14,12 @@ import dev.kylesilver.boggle.board.Tile;
  * dead-end searches can be exhausted quickly, we can get comparable results
  * without the memory overhead of a Trie.
  * 
+ * Note: this assertion is patently untrue, and this implementation is an
+ * order of magnitude slower than the Trie
+ *  
  * @author Kyle Silver
  */
-public class DictSolver {
+public class DictSolver implements BoggleSolver {
 
     private List<String> dictionary;
     
@@ -24,7 +27,7 @@ public class DictSolver {
         this.dictionary = dictionary;
     }
     
-    public Set<String> findAllWords(Board board) {
+    public Set<String> solve(Board board) {
         Set<String> foundWords = new HashSet<>();
         for (String word : dictionary) {
             searchForWord(word, board, foundWords);

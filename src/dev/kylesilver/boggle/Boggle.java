@@ -1,59 +1,45 @@
 package dev.kylesilver.boggle;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import dev.kylesilver.boggle.board.Board;
-import dev.kylesilver.boggle.dictsolver.DictSolver;
 import dev.kylesilver.boggle.io.FileReader;
-import dev.kylesilver.boggle.triesolver.TrieSolver;
+import dev.kylesilver.boggle.solvers.BoggleSolver;
+import dev.kylesilver.boggle.solvers.DictSolver;
+import dev.kylesilver.boggle.solvers.TrieSolver;
 
 public class Boggle {
 
     private static final String DICTIONARY_PATH = "./res/dictionary.txt";
-    private static final String BOGGLE01_PATH = "./res/boggle01.txt";
 
     public static void main(String[] args) {
-        //solveWithTrie();
-        solveWithDict();
-    }
-
-    private static void solveWithTrie() {
         List<String> dictionary = FileReader.getDictionary(DICTIONARY_PATH);
-        char[][] input01 = FileReader.getBoard(BOGGLE01_PATH);
-
-        TrieSolver ts = new TrieSolver(dictionary);
-        Board board01 = new Board.Builder(input01).build();
-
-        long start, end;
-        start = System.currentTimeMillis();
-        Set<String> result = ts.findAllWords(board01);
-        end = System.currentTimeMillis();
-
-        for (String word : result) {
-            System.out.println(word);
-        }
+        List<Board> boards = loadBoards();
         
-        System.out.println("Found " + result.size() + " words in " + (end-start) + "ms");
-
+        BoggleSolver trieSolver = new TrieSolver(dictionary);
+        BoggleSolver dictSolver = new DictSolver(dictionary);
+        
+        // TODO these solvers don't find the same number of solutions
+        timedSolve(trieSolver, boards.get(1));
+        timedSolve(dictSolver, boards.get(1));
     }
-
-    private static void solveWithDict() {
-        List<String> dictionary = FileReader.getDictionary(DICTIONARY_PATH);
-        char[][] input01 = FileReader.getBoard(BOGGLE01_PATH);
-
-        DictSolver ds = new DictSolver(dictionary);
-        Board board01 = new Board.Builder(input01).build();
-        
-        long start, end;
-        start = System.currentTimeMillis();
-        Set<String> result = ds.findAllWords(board01);
-        end = System.currentTimeMillis();
-
-        for (String word : result) {
-            System.out.println(word);
-        }
-        
+    
+    private static void timedSolve(BoggleSolver solver, Board board) {
+        long start = System.currentTimeMillis();
+        Set<String> result = solver.solve(board);
+        long end = System.currentTimeMillis(); 
         System.out.println("Found " + result.size() + " words in " + (end-start) + "ms");
     }
+    
+    private static List<Board> loadBoards() {
+        List<Board> boards = new ArrayList<>();
+        boards.add(new Board.Builder(FileReader.getBoard("./res/boggle01.txt")).build());
+        boards.add(new Board.Builder(FileReader.getBoard("./res/boggle02.txt")).build());
+        boards.add(new Board.Builder(FileReader.getBoard("./res/boggle03.txt")).build());
+        return boards;
+    }
+
+    
 }

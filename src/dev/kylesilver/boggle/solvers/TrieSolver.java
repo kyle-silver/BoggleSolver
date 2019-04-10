@@ -1,4 +1,4 @@
-package dev.kylesilver.boggle.triesolver;
+package dev.kylesilver.boggle.solvers;
 
 import dev.kylesilver.boggle.board.Board;
 import dev.kylesilver.boggle.board.Tile;
@@ -13,7 +13,7 @@ import java.util.Set;
  * 
  * @author Kyle Silver
  */
-public class TrieSolver {
+public class TrieSolver implements BoggleSolver {
 
     private TrieNode root;
 
@@ -21,7 +21,7 @@ public class TrieSolver {
         root = TrieNode.buildTrie(dictionary);
     }
 
-    public Set<String> findAllWords(Board board) {
+    public Set<String> solve(Board board) {
         Set<String> foundWords = new HashSet<>();
         for (Tile tile : board.tiles()) {
             searchFrom(tile, board, root, foundWords);

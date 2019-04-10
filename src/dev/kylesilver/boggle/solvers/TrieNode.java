@@ -1,4 +1,4 @@
-package dev.kylesilver.boggle.triesolver;
+package dev.kylesilver.boggle.solvers;
 
 import java.util.HashMap;
 import java.util.List;
