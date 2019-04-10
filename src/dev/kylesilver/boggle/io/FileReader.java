@@ -8,7 +8,8 @@ import java.util.List;
 
 public class FileReader {
 
-    private FileReader() { }
+    private FileReader() {
+    }
 
     public static List<String> getDictionary(String path) {
         List<String> words;

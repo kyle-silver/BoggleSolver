@@ -18,7 +18,7 @@ public class TrieSolver {
     public Set<String> findAllWords(Board board) {
         Set<String> foundWords = new HashSet<>();
         for (Tile tile : board.tiles()) {
-        	searchFrom(tile, board, root, foundWords);
+            searchFrom(tile, board, root, foundWords);
         }
         return foundWords;
     }
