@@ -1,11 +1,10 @@
 package dev.kylesilver.boggle.solvers;
 
-import dev.kylesilver.boggle.board.Board;
-import dev.kylesilver.boggle.board.Tile;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import dev.kylesilver.boggle.board.Board;
+import dev.kylesilver.boggle.board.Tile;
 
 /**
  * Constructs a Trie from the provided dictionary, then performs a Depth-First
@@ -22,24 +21,23 @@ public class TrieSolver implements BoggleSolver {
     }
 
     public Set<String> solve(Board board) {
-        Set<String> foundWords = new HashSet<>();
+        SearchState state = new SearchState();
         for (Tile tile : board.tiles()) {
-            searchFrom(tile, board, root, foundWords);
+            searchFrom(tile, root, state);
         }
-        return foundWords;
+        return state.getFoundWords();
     }
 
-    private void searchFrom(Tile tile, Board board, TrieNode node, Set<String> foundWords) {
-        Set<Tile> neighbors = board.unvisitedNeighbors(tile);
-        for (Tile neighbor : neighbors) {
+    private void searchFrom(Tile tile, TrieNode node, SearchState state) {
+        for (Tile neighbor : state.unvisitedNeighbors(tile)) {
             if (node.containsKey(tile.value())) {
                 TrieNode next = node.getChild(tile.value());
                 if (next.isTerminator()) {
-                    foundWords.add(next.getWord());
+                    state.addWord(next.getWord());
                 }
-                board.addToVisited(neighbor);
-                searchFrom(neighbor, board, next, foundWords);
-                board.removeFromVisited(neighbor);
+                state.addToVisited(neighbor);
+                searchFrom(neighbor, next, state);
+                state.removeFromVisited(neighbor);
             }
         }
     }

@@ -6,40 +6,12 @@ import java.util.Set;
 public class Board {
 
     private Set<Tile> tiles;
-    private Set<Tile> visited;
 
     private Board() {
-        visited = new HashSet<>();
     }
 
     public Set<Tile> tiles() {
         return tiles;
-    }
-
-    public boolean visited(Tile tile) {
-        return visited.contains(tile);
-    }
-
-    public void addToVisited(Tile tile) {
-        visited.add(tile);
-    }
-
-    public void removeFromVisited(Tile tile) {
-        visited.remove(tile);
-    }
-
-    public void clearVisited() {
-        visited.clear();
-    }
-
-    public Set<Tile> unvisitedNeighbors(Tile tile) {
-        Set<Tile> unvisited = new HashSet<>();
-        for (Tile neighbor : tile.neighbors()) {
-            if (!visited.contains(neighbor)) {
-                unvisited.add(neighbor);
-            }
-        }
-        return unvisited;
     }
 
     public static class Builder {
@@ -117,8 +89,6 @@ public class Board {
                 return false;
             }
             return true;
-
         }
     }
-
 }

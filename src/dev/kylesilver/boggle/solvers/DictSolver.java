@@ -1,6 +1,5 @@
 package dev.kylesilver.boggle.solvers;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,34 +27,45 @@ public class DictSolver implements BoggleSolver {
     }
     
     public Set<String> solve(Board board) {
-        Set<String> foundWords = new HashSet<>();
+        SearchState state = new SearchState();
         for (String word : dictionary) {
-            searchForWord(word, board, foundWords);
+            searchForWord(word, board, state);
         }
-        return foundWords;
+        return state.getFoundWords();
     }
 
-    private static void searchForWord(String word, Board board, Set<String> foundWords) {
+    private static void searchForWord(String word, Board board, SearchState state) {
         for (Tile tile : board.tiles()) {
-            searchFrom(tile, board, foundWords, word, 0);
+            searchFrom(tile, word, 0, state);
         }
     }
 
-    private static void searchFrom(Tile tile, Board board, Set<String> foundWords, String word, int index) {
-        if (index >= word.length()) {
+    private static void searchFrom(Tile tile, String word, int index, SearchState state) {
+        if (searchShouldTerminate(tile, word, index)) {
             return;
+        }
+        if (wordHasBeenFound(word, index)) {
+            state.addWord(word);
+            return;
+        }
+        state.addToVisited(tile);
+        for (Tile neighbor : state.unvisitedNeighbors(tile)) {
+            searchFrom(neighbor, word, index+1, state);
+        }
+        state.removeFromVisited(tile);
+    }
+    
+    private static boolean searchShouldTerminate(Tile tile, String word, int index) {
+        if (index >= word.length()) {
+            return true;
         }
         if (tile.value() != word.charAt(index)) {
-            return;
+            return true;
         }
-        if (index == word.length() - 1) {
-            foundWords.add(word);
-            return;
-        }
-        board.addToVisited(tile);
-        for (Tile neighbor : board.unvisitedNeighbors(tile)) {
-            searchFrom(neighbor, board, foundWords, word, index+1);
-        }
-        board.removeFromVisited(tile);
+        return false;
+    }
+    
+    private static boolean wordHasBeenFound(String word, int index) {
+        return index == word.length() - 1;
     }
 }
