@@ -21,8 +21,8 @@ public class Boggle {
         BoggleSolver trieSolver = new TrieSolver(dictionary);
         BoggleSolver dictSolver = new DictSolver(dictionary);
         
-        timedSolve(trieSolver, boards.get(2));
-        timedSolve(dictSolver, boards.get(2));
+        timedSolve(trieSolver, boards.get(0));
+        timedSolve(dictSolver, boards.get(0));
    
     }
     
