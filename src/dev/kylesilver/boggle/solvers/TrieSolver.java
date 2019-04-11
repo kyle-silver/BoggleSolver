@@ -23,22 +23,25 @@ public class TrieSolver implements BoggleSolver {
     public Set<String> solve(Board board) {
         SearchState state = new SearchState();
         for (Tile tile : board.tiles()) {
+            state.addToVisited(tile);
             searchFrom(tile, root, state);
+            state.removeFromVisited(tile);
         }
         return state.getFoundWords();
     }
 
     private void searchFrom(Tile tile, TrieNode node, SearchState state) {
+        if (!node.containsKey(tile.value())) {
+            return;
+        }
+        TrieNode next = node.getChild(tile.value());
+        if (next.isTerminator()) {
+            state.addWord(next.getWord());
+        }
         for (Tile neighbor : state.unvisitedNeighbors(tile)) {
-            if (node.containsKey(tile.value())) {
-                TrieNode next = node.getChild(tile.value());
-                if (next.isTerminator()) {
-                    state.addWord(next.getWord());
-                }
-                state.addToVisited(neighbor);
-                searchFrom(neighbor, next, state);
-                state.removeFromVisited(neighbor);
-            }
+            state.addToVisited(neighbor);
+            searchFrom(neighbor, next, state);
+            state.removeFromVisited(neighbor);
         }
     }
 }

@@ -21,16 +21,17 @@ public class Boggle {
         BoggleSolver trieSolver = new TrieSolver(dictionary);
         BoggleSolver dictSolver = new DictSolver(dictionary);
         
-        // TODO these solvers don't find the same number of solutions
-        timedSolve(trieSolver, boards.get(1));
-        timedSolve(dictSolver, boards.get(1));
+        timedSolve(trieSolver, boards.get(2));
+        timedSolve(dictSolver, boards.get(2));
+   
     }
     
-    private static void timedSolve(BoggleSolver solver, Board board) {
+    private static Set<String> timedSolve(BoggleSolver solver, Board board) {
         long start = System.currentTimeMillis();
         Set<String> result = solver.solve(board);
         long end = System.currentTimeMillis(); 
         System.out.println("Found " + result.size() + " words in " + (end-start) + "ms");
+        return result;
     }
     
     private static List<Board> loadBoards() {
@@ -40,6 +41,4 @@ public class Boggle {
         boards.add(new Board.Builder(FileReader.getBoard("./res/boggle03.txt")).build());
         return boards;
     }
-
-    
 }
