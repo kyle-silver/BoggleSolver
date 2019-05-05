@@ -1,7 +1,10 @@
 package dev.kylesilver.boggle.board;
 
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
+
+import dev.kylesilver.boggle.io.FileReader;
 
 public class Board {
 
@@ -19,6 +22,12 @@ public class Board {
 
         public Builder(char[][] inputBoard) {
             board = new Board();
+            board.tiles = parseBoard(inputBoard);
+        }
+
+        public Builder(Path path) {
+            board = new Board();
+            char[][] inputBoard = FileReader.getBoard(path.toString());
             board.tiles = parseBoard(inputBoard);
         }
 
